@@ -3,6 +3,7 @@ CREATE TABLE bookery_books (
   title TEXT NOT NULL,
   author TEXT NOT NULL,
   book_description TEXT,
+  graphic TEXT,
   isbn CHAR(13),
   pages INTEGER,
   average_rating INTEGER
