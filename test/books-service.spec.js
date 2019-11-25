@@ -1,4 +1,4 @@
-const BooksService = require('../src/books-service')
+const BooksService = require('../src/books/books-service')
 const knex = require('knex')
 
 describe(`Books service object`, function() {
@@ -58,6 +58,7 @@ describe(`Books service object`, function() {
     it(`resolves all books from 'bookery_books' table`, () => {
       return BooksService.getAllBooks(db)
         .then(actual => {
+          console.log(actual)
           expect(actual).to.eql(testBooks)
         })
     })
