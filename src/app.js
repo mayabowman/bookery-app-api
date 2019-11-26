@@ -4,6 +4,8 @@ const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV, CLIENT_ORIGIN } = require('./config')
+const usersRouter = require('./users/users-router')
+const booksRouter = require('./books/books-router')
 
 
 const app = express()
@@ -27,6 +29,9 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions))
+
+app.use('/api/users', usersRouter)
+app.use('/api/books', booksRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello, world!')

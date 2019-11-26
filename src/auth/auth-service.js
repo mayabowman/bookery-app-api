@@ -8,20 +8,24 @@ const AuthService = {
       .where({ user_email })
       .first()
   },
+
   comparePasswords(password, hash) {
     return bcrypt.compare(password, hash)
   },
+
   createJwt(subject, payload) {
     return jwt.sign(payload, config.JWT_SECRET, {
       subject,
       algorithm: 'HS256',
     })
   },
-  verfyJwt(token) {
+
+  verifyJwt(token) {
     return jwt.verify(token, config.JWT_SECRET, {
-      ALGORITHMS: ['HS256'],
+      algorithms: ['HS256'],
     })
   },
+
   parseBasicToken(token) {
     return Buffer
       .from(token, 'base64')

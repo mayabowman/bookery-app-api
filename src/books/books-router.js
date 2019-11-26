@@ -1,10 +1,15 @@
-require('dotenv').config()
-const knex = require('knex')
+const express = require('express')
 const BooksService = require('./books-service')
+const booksRouter = express.Router()
 
-const knexInstance = knex({
-  client: 'pg',
-  connection: process.env.DATABASE_URL
-})
+booksRouter
+  .route('/')
+  .get((req, res, next) => {
+    BooksService.getAllBooks(req.app.get('db'))
+      .then(books => {
+        res.json(books)
+      })
+      .catch(next)
 
-console.log(BooksService.getAllBooks())
+module.exports = booksRouter
+
