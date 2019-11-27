@@ -7,7 +7,7 @@ const UsersService = {
     return db('bookery_users')
       .where({ user_email })
       .first()
-      .then(user => !user)
+      .then(user => !!user)
   },
 
   insertUser(db, newUser) {
