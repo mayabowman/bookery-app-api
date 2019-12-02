@@ -47,9 +47,7 @@ function makeFixtures() {
 function cleanTables(db) {
   return db.transaction(trx =>
     trx.raw(
-      `TRUNCATE
-        bookery_users,
-      `
+      `TRUNCATE bookery_users`
     )
     .then(() =>
       Promise.all([
