@@ -80,6 +80,7 @@ const BookshelfService = {
 
   // delete bookshelfItem by book id
   deleteBookshelfItem(db, id) {
+    console.log(id)
     return db
       .where('bookshelf.book_id', id)
       .delete()

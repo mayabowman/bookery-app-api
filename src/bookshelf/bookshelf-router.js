@@ -70,6 +70,7 @@ bookshelfRouter
   })
   .delete(jsonBodyParser, (req, res, next) => {
     const { id } = req.params
+    console.log(id)
     BookshelfService.deleteBookshelfItem(req.app.get('db'), id)
       .then(() => {
         res.status(204).end()
