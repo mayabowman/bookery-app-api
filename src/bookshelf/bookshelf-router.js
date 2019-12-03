@@ -44,7 +44,7 @@ bookshelfRouter
     // .all(requireAuth)
     .all(checkBookshelfItemExists)
     .get((req, res) => {
-      res.json(items)
+      res.json(BookshelfService.serializeBookshelfItem(res.bookshelfItem))
       // res.json(BookshelfService.serializeBookshelfItem(res.bookshelfItem))
     })
 

@@ -62,8 +62,8 @@ const BookshelfService = {
 
     // return oneBookshelfItem
 
-    return BookshelfService.getAllBookshelfItems(db, id)
-      .where('bookshelf.book_id', id)
+    return db('bookery_books')
+      .where('id', id)
       .first()
   },
 
@@ -111,19 +111,22 @@ const BookshelfService = {
   serializeBookshelfItem(bookshelfItem) {
     const { reviewer } = bookshelfItem
     return {
-      id: article.id,
-      style: article.style,
-      title: xss(article.title),
-      content: xss(article.content),
-      date_created: new Date(article.date_created),
-      number_of_comments: Number(article.number_of_comments) || 0,
-      author: {
-        id: author.id,
-        user_name: author.user_name,
-        full_name: author.full_name,
-        nickname: author.nickname,
-        date_created: new Date(author.date_created),
-        date_modified: new Date(author.date_modified) || null
+      id: bookshelfItem.id,
+      title: bookshelfItem.title,
+      author: bookshelfItem.author,
+      description: bookshelfItem.book_description,
+      graphic: bookshelfItem.graphic,
+      isbn: bookshelfItem.isbn,
+      pages: bookshelfItem.pages,
+      average_rating: bookshelfItem.average_rating,
+      reviewer: {
+        id: usr.id,
+        user_email: usr.user_email,
+        first_name: usr.first_name,
+        last_name: usr.last_name,
+        password: usr.password,
+        date_created: new Date(usr.date_created),
+        date_modified: new Date(usr.date_modified) || null
       },
     }
   },
