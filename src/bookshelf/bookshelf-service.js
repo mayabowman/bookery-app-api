@@ -56,7 +56,7 @@ const BookshelfService = {
 
   // get book by book id
   getById(db, id) {
-    const allBookshelfItems = BookshelfService.getAllBookshelfItems()
+    const allBookshelfItems = BookshelfService.getAllBookshelfItems(db)
     const oneBookshelfItem = allBookshelfItems.find(x => x.id === req.params.bookshelf_id)
 
     return oneBookshelfItem
