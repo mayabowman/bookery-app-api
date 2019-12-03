@@ -56,14 +56,15 @@ const BookshelfService = {
 
   // get book by book id
   getById(db, id) {
-    const allBookshelfItems = BookshelfService.getAllBookshelfItems(db)
-    const oneBookshelfItem = allBookshelfItems.find(x => x.id === req.params.bookshelf_id)
+    // const allBookshelfItems = BookshelfService.getAllBookshelfItems(db, id)
+    // const oneBookshelfItem = allBookshelfItems.find(x => x.id === req.params.bookshelf_id)
+    // console.log('************', allBookshelfItems)
 
-    return oneBookshelfItem
+    // return oneBookshelfItem
 
-    // return BookshelfService.getAllBookshelfItems(db)
-    //   .where(oneBookshelfItem, id)
-    //   .first()
+    return BookshelfService.getAllBookshelfItems(db, id)
+      .where('bookshelf.book_id', id)
+      .first()
   },
 
   // post review / rating

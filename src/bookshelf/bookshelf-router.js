@@ -122,7 +122,7 @@ bookshelfRouter
         req.app.get('db'),
         req.params.bookshelf_item_id
       )
-
+      console.log('******------------*******', req.params.bookshelf_item_id)
       if (!bookshelfItem)
         return res.status(404).json({
           error: `Bookshelf item doesn't exist`
