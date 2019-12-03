@@ -1,3 +1,7 @@
+To start server, use `npm run dev`
+To start database, use `pg_ctl start`
+To stop database, use `pg_ctl stop`
+
 # Express Boilerplate!
 
 This is a boilerplate project used for starting new projects.

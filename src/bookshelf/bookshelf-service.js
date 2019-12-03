@@ -4,6 +4,7 @@ const BookshelfService = {
 
   // get all books
   getAllBookshelfItems(db) {
+    console.log('***************',db)
     return db
       .from('bookery_books AS books')
       .select(
@@ -55,13 +56,14 @@ const BookshelfService = {
 
   // get book by book id
   getById(db, id) {
-
     const allBookshelfItems = BookshelfService.getAllBookshelfItems()
     const oneBookshelfItem = allBookshelfItems.find(x => x.id === req.params.bookshelf_id)
 
-    return BookshelfService.getAllBookshelfItems(db)
-      .where(oneBookshelfItem, id)
-      .first()
+    return oneBookshelfItem
+
+    // return BookshelfService.getAllBookshelfItems(db)
+    //   .where(oneBookshelfItem, id)
+    //   .first()
   },
 
   // post review / rating
@@ -80,29 +82,50 @@ const BookshelfService = {
 
   // delete bookshelfItem by book id
   deleteBookshelfItem(db, id) {
+    // const allBookshelfItems = BookshelfService.getAllBookshelfItems()
+    // const oneBookshelfItem = allBookshelfItems.find(x => x.id === req.params.bookshelf_id)
     console.log(id)
     return db
       .where('bookshelf.book_id', id)
       .delete()
   },
 
-  serializeReview(review) {
-    const { user } = review
+        // 'books.id',
+        // 'books.title',
+        // 'books.author',
+        // 'books.book_description',
+        // 'books.graphic',
+        // 'books.isbn',
+        // 'books.pages',
+        // 'books.average_rating',
+
+        // 'id', usr.id,
+        // 'user_email', usr.user_email,
+        // 'first_name', usr.first_name,
+        // 'last_name', usr.last_name,
+        // 'password', usr.password,
+        // 'date_created', usr.date_created,
+        // 'date_modified', usr.date_modified
+
+  serializeBookshelfItem(bookshelfItem) {
+    const { reviewer } = bookshelfItem
     return {
-      id: review.id,
-      text: xss(review.text),
-      article_id: review.article_id,
-      date_created: new Date(review.date_created),
-      user: {
-        id: user.id,
-        user_eamil: user.user_email,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        date_created: new Date(user.date_created),
-        date_modified: new Date(user.date_modified) || null
+      id: article.id,
+      style: article.style,
+      title: xss(article.title),
+      content: xss(article.content),
+      date_created: new Date(article.date_created),
+      number_of_comments: Number(article.number_of_comments) || 0,
+      author: {
+        id: author.id,
+        user_name: author.user_name,
+        full_name: author.full_name,
+        nickname: author.nickname,
+        date_created: new Date(author.date_created),
+        date_modified: new Date(author.date_modified) || null
       },
     }
-  }
+  },
 
 }
 
