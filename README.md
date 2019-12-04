@@ -2,6 +2,8 @@ To start server, use `npm run dev`
 To start database, use `pg_ctl start`
 To stop database, use `pg_ctl stop`
 
+Seeding command example: psql -U dunder_mifflin -d blogful -f ./seeds/seed.blogful_articles.sql
+
 # Express Boilerplate!
 
 This is a boilerplate project used for starting new projects.

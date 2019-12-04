@@ -56,12 +56,6 @@ const BookshelfService = {
 
   // get book by book id
   getById(db, id) {
-    // const allBookshelfItems = BookshelfService.getAllBookshelfItems(db, id)
-    // const oneBookshelfItem = allBookshelfItems.find(x => x.id === req.params.bookshelf_id)
-    // console.log('************', allBookshelfItems)
-
-    // return oneBookshelfItem
-
     return db('bookery_books')
       .where('id', id)
       .first()
@@ -83,8 +77,6 @@ const BookshelfService = {
 
   // delete bookshelfItem by book id
   deleteBookshelfItem(db, id) {
-    // const allBookshelfItems = BookshelfService.getAllBookshelfItems()
-    // const oneBookshelfItem = allBookshelfItems.find(x => x.id === req.params.bookshelf_id)
     console.log(id)
     return BookshelfService.getById(db, id)
       .where('id', id)
@@ -118,3 +110,6 @@ const BookshelfService = {
 }
 
 module.exports = BookshelfService
+
+// const allBookshelfItems = BookshelfService.getAllBookshelfItems(db, id)
+// const oneBookshelfItem = allBookshelfItems.find(x => x.id === req.params.bookshelf_id)
