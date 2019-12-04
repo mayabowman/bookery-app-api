@@ -109,7 +109,7 @@ const BookshelfService = {
         // 'date_modified', usr.date_modified
 
   serializeBookshelfItem(bookshelfItem) {
-    const { reviewer } = bookshelfItem
+    const { reviewer, usr } = bookshelfItem
     return {
       id: bookshelfItem.id,
       title: bookshelfItem.title,
