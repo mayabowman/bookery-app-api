@@ -86,30 +86,14 @@ const BookshelfService = {
     // const allBookshelfItems = BookshelfService.getAllBookshelfItems()
     // const oneBookshelfItem = allBookshelfItems.find(x => x.id === req.params.bookshelf_id)
     console.log(id)
-    return db
-      .where('bookshelf.book_id', id)
+    return BookshelfService.getById(db, id)
+      .where('id', id)
       .delete()
   },
 
-        // 'books.id',
-        // 'books.title',
-        // 'books.author',
-        // 'books.book_description',
-        // 'books.graphic',
-        // 'books.isbn',
-        // 'books.pages',
-        // 'books.average_rating',
-
-        // 'id', usr.id,
-        // 'user_email', usr.user_email,
-        // 'first_name', usr.first_name,
-        // 'last_name', usr.last_name,
-        // 'password', usr.password,
-        // 'date_created', usr.date_created,
-        // 'date_modified', usr.date_modified
-
   serializeBookshelfItem(bookshelfItem) {
     const { reviewer, usr } = bookshelfItem
+    console.log('****bookshelfItem****', bookshelfItem)
     return {
       id: bookshelfItem.id,
       title: bookshelfItem.title,
@@ -119,15 +103,15 @@ const BookshelfService = {
       isbn: bookshelfItem.isbn,
       pages: bookshelfItem.pages,
       average_rating: bookshelfItem.average_rating,
-      reviewer: {
-        id: usr.id,
-        user_email: usr.user_email,
-        first_name: usr.first_name,
-        last_name: usr.last_name,
-        password: usr.password,
-        date_created: new Date(usr.date_created),
-        date_modified: new Date(usr.date_modified) || null
-      },
+      // reviewer: {
+      //   id: usr.id,
+      //   user_email: usr.user_email,
+      //   first_name: usr.first_name,
+      //   last_name: usr.last_name,
+      //   password: usr.password,
+      //   date_created: new Date(usr.date_created),
+      //   date_modified: new Date(usr.date_modified) || null
+      // },
     }
   },
 
