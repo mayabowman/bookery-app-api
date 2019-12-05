@@ -6,16 +6,21 @@ const BookshelfService = {
   getAllBookshelfItems(db) {
     console.log('***************',db)
     return db
-      .from('bookery_books AS books')
+      .from('bookery_bookshelf AS bookshelf')
       .select(
-        'books.id',
-        'books.title',
-        'books.author',
-        'books.book_description',
-        'books.graphic',
-        'books.isbn',
-        'books.pages',
-        'books.average_rating',
+        'bookshelf.id',
+        'bookshelf.user_id',
+        'bookshelf.book_id',
+        'bookshelf.review',
+        'bookshelf.rating',
+        // 'books.id',
+        // 'books.title',
+        // 'books.author',
+        // 'books.book_description',
+        // 'books.graphic',
+        // 'books.isbn',
+        // 'books.pages',
+        // 'books.average_rating',
         // db.raw(
         //   `count(DISTINCT comm) AS number_of_comments`
         // ),
@@ -26,7 +31,6 @@ const BookshelfService = {
               'user_email', usr.user_email,
               'first_name', usr.first_name,
               'last_name', usr.last_name,
-              'password', usr.password,
               'date_created', usr.date_created,
               'date_modified', usr.date_modified
             )
@@ -35,15 +39,20 @@ const BookshelfService = {
         db.raw(
           `json_strip_nulls(
             json_build_object(
-              'id', bookshelf.id,
-              'rating', bookshelf.rating,
-              'review', bookshelf.review
+              'id', books.id,
+              'title', books.title,
+              'author', books.author,
+              'book_description', books.book_description,
+              'graphic', books.graphic,
+              'isbn', books.isbn,
+              'pages', books.pages,
+              'average_rating', books.average_rating
             )
-          ) AS "bookshelfItem"`
+          ) AS "books"`
         )
       )
       .leftJoin(
-        'bookery_bookshelf AS bookshelf',
+        'bookery_books AS books',
         'bookshelf.book_id',
         'books.id'
       )
@@ -56,9 +65,12 @@ const BookshelfService = {
 
   // get book by book id
   getById(db, id) {
-    return db('bookery_books')
-      .where('id', id)
+    return BookshelfService.getAllBookshelfItems(db)
+      .where('bookshelf.id', id)
       .first()
+    // return db('bookery_bookshelf')
+    //   .where('id', id)
+    //   .first()
   },
 
   // post review / rating

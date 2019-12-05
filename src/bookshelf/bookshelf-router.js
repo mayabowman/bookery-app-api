@@ -43,8 +43,12 @@ bookshelfRouter
     .route('/:bookshelf_item_id')
     // .all(requireAuth)
     .all(checkBookshelfItemExists)
-    .get((req, res) => {
-      res.json(BookshelfService.serializeBookshelfItem(res.bookshelfItem))
+    .get((req, res, next) => {
+      BookshelfService.getById(req.app.get('db'), req.params.bookshelf_item_id)
+      .then(items => {
+        res.json(items)
+      })
+      .catch(next)
       // res.json(BookshelfService.serializeBookshelfItem(res.bookshelfItem))
     })
 
