@@ -3,6 +3,7 @@ const xss = require('xss')
 const BookshelfService = {
   // add book to bookshelf
   addToBookshelf(db, bookToAdd) {
+    console.log('******bookToAdd*******',bookToAdd)
     return db
       .insert(bookToAdd)
       .into('bookery_bookshelf')

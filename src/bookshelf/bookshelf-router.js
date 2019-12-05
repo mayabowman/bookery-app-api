@@ -15,8 +15,11 @@ bookshelfRouter
       .catch(next)
   })
   .post((req, res, next) => {
-    const { bookshelf_id, book_id } = req.body
-    const addedBook = { bookshelf_id, book_id }
+    const { book_id } = req.body
+    const addedBook = { book_id }
+    console.log('I made it here')
+
+    console.log(req.body)
 
     for (const [key, value] of Object.entries(addedBook)) {
       if (value == null) {
