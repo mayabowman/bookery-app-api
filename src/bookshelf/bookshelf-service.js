@@ -4,7 +4,6 @@ const BookshelfService = {
 
   // get all books
   getAllBookshelfItems(db) {
-    console.log('***************',db)
     return db
       .from('bookery_bookshelf AS bookshelf')
       .select(
