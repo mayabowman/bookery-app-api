@@ -14,6 +14,29 @@ bookshelfRouter
       })
       .catch(next)
   })
+  .post((req, res, next) => {
+    const { bookshelf_id, book_id } = req.body
+    const addedBook = { bookshelf_id, book_id }
+
+    for (const [key, value] of Object.entries(addedBook)) {
+      if (value == null) {
+        return res.status(400).json({
+          error: { message: `Missing '${key}' in request` }
+        })
+      }
+    }
+
+    addedBook.user_id = req.user.id
+
+    BookshelfService.addToBookshelf(req.app.get('db'), addedBook)
+      .then(book => {
+        res
+          .status(201)
+          .location(path.posix.join(req.originalUrl, `/${book.id}`))
+          .json(BookshelfService.serializeReview(book))
+      })
+      .catch(next)
+  })
 
   bookshelfRouter
     .route('/:bookshelf_item_id')

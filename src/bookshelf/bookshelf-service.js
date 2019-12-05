@@ -1,6 +1,16 @@
 const xss = require('xss')
 
 const BookshelfService = {
+  // add book to bookshelf
+  addToBookshelf(db, bookToAdd) {
+    return db
+      .insert(bookToAdd)
+      .into('bookery_bookshelf')
+      .returning('*')
+      .then(rows => {
+        return rows[0]
+      })
+  },
 
   // get all books
   getAllBookshelfItems(db) {
