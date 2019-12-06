@@ -1,17 +1,6 @@
 const xss = require('xss')
 
 const BookshelfService = {
-  // add book to bookshelf
-  addToBookshelf(db, bookToAdd) {
-    console.log('******bookToAdd*******',bookToAdd)
-    return db
-      .insert(bookToAdd)
-      .into('bookery_bookshelf')
-      .returning('*')
-      .then(rows => {
-        return rows[0]
-      })
-  },
 
   // get all books
   getAllBookshelfItems(db) {
@@ -81,6 +70,18 @@ const BookshelfService = {
     // return db('bookery_bookshelf')
     //   .where('id', id)
     //   .first()
+  },
+
+  // add book to bookshelf
+  addToBookshelf(db, bookToAdd) {
+    console.log('******bookToAdd*******',bookToAdd)
+    return db
+      .insert(bookToAdd)
+      .into('bookery_bookshelf')
+      .returning('*')
+      .then(rows => {
+        return rows[0]
+      })
   },
 
   // post review / rating
