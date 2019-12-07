@@ -92,7 +92,7 @@ const BookshelfService = {
   },
 
   // put / patch review and rating
-  updateReview(db, id, newReviewFields) {
+  updateBookshelfItem(db, id, newReviewFields) {
     return db
       .where('bookshelf.review', id)
       .update(newReviewFields)

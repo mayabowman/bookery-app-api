@@ -14,14 +14,14 @@ bookshelfRouter
       })
       .catch(next)
   })
-  .post((req, res, next) => {
+
+  .post(requireAuth, jsonBodyParser, (req, res, next) => {
     console.log('I made it here')
     console.log(req.body)
-    const { book_id } = req.body
-    const addedBook = { book_id }
-    console.log(req.body)
+    const { book_id, review, rating } = req.body
+    const bookToAdd = { book_id, review, rating }
 
-    for (const [key, value] of Object.entries(addedBook)) {
+    for (const [key, value] of Object.entries(bookToAdd)) {
       if (value == null) {
         return res.status(400).json({
           error: { message: `Missing '${key}' in request` }
@@ -29,14 +29,14 @@ bookshelfRouter
       }
     }
 
-    addedBook.user_id = req.user.id
+    bookToAdd.user_id = req.user.id
 
-    BookshelfService.addToBookshelf(req.app.get('db'), addedBook)
+    BookshelfService.addToBookshelf(req.app.get('db'), bookToAdd)
       .then(book => {
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${book.id}`))
-          .json(BookshelfService.serializeReview(book))
+          // .json(BookshelfService.serializeReview(book))
       })
       .catch(next)
   })
