@@ -2,7 +2,7 @@ const BooksService = require("../src/books/books-service");
 const knex = require("knex");
 
 describe(`Books service object`, function() {
-  let db;
+  let db
 
   let testBooks = [
     {
@@ -48,10 +48,10 @@ describe(`Books service object`, function() {
       .then(() => {
         console.log('before adding')
         // insert our test book list into bookery_books table
-        return db.into("bookery_books").insert(testBooks);
+        return db.into("bookery_books").insert(testBooks)
       })
       .then(() => {
-        console.log("after adding");
+        console.log("after adding")
       });
   });
 

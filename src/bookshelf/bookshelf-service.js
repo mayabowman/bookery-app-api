@@ -12,17 +12,6 @@ const BookshelfService = {
         'bookshelf.book_id',
         'bookshelf.review',
         'bookshelf.rating',
-        // 'books.id',
-        // 'books.title',
-        // 'books.author',
-        // 'books.book_description',
-        // 'books.graphic',
-        // 'books.isbn',
-        // 'books.pages',
-        // 'books.average_rating',
-        // db.raw(
-        //   `count(DISTINCT comm) AS number_of_comments`
-        // ),
         db.raw(
           `json_strip_nulls(
             json_build_object(
@@ -67,14 +56,10 @@ const BookshelfService = {
     return BookshelfService.getAllBookshelfItems(db)
       .where('bookshelf.id', id)
       .first()
-    // return db('bookery_bookshelf')
-    //   .where('id', id)
-    //   .first()
   },
 
   // add book to bookshelf
   addToBookshelf(db, bookToAdd) {
-    console.log('******bookToAdd*******',bookToAdd)
     return db
       .insert(bookToAdd)
       .into('bookery_bookshelf')
@@ -93,8 +78,8 @@ const BookshelfService = {
 
   // put / patch review and rating
   updateBookshelfItem(db, id, newReviewFields) {
-    return db
-      .where('bookshelf.review', id)
+    return db('bookery_bookshelf')
+      .where('id', id)
       .update(newReviewFields)
   },
 
@@ -118,15 +103,6 @@ const BookshelfService = {
       isbn: bookshelfItem.isbn,
       pages: bookshelfItem.pages,
       average_rating: bookshelfItem.average_rating,
-      // reviewer: {
-      //   id: usr.id,
-      //   user_email: usr.user_email,
-      //   first_name: usr.first_name,
-      //   last_name: usr.last_name,
-      //   password: usr.password,
-      //   date_created: new Date(usr.date_created),
-      //   date_modified: new Date(usr.date_modified) || null
-      // },
     }
   },
 
@@ -134,5 +110,3 @@ const BookshelfService = {
 
 module.exports = BookshelfService
 
-// const allBookshelfItems = BookshelfService.getAllBookshelfItems(db, id)
-// const oneBookshelfItem = allBookshelfItems.find(x => x.id === req.params.bookshelf_id)

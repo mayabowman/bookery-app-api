@@ -1,138 +1,66 @@
 const knex = require('knex')
 const bcrypt = require('bcryptjs')
 const app = require('../src/app')
-const helpers = require('./test-helpers')
 
 describe('Users Endpoints', function() {
   let db
 
-  const { testUsers } = helpers.makeFixtures()
-  const testUser = testUsers[0]
+  let testUsers = [
+    {
+      id: 1,
+      user_email: 'testuser1@gmail.com',
+      first_name: 'Test1',
+      last_name: 'User1',
+      password: 'password',
+      date_created: '2029-01-22T16:28:32.615Z'
+    },
+    {
+      id: 2,
+      user_email: 'testuser2@gmail.com',
+      first_name: 'Test2',
+      last_name: 'User2',
+      password: 'password',
+      date_created: '2029-01-22T16:28:32.615Z'
+    },
+    {
+      id: 3,
+      user_email: 'testuser3@gmail.com',
+      first_name: 'Test3',
+      last_name: 'User3',
+      password: 'password',
+      date_created: '2029-01-22T16:28:32.615Z'
+    },
+    {
+      id: 4,
+      user_email: 'testuser4@gmail.com',
+      first_name: 'Test4',
+      last_name: 'User4',
+      password: 'password',
+      date_created: '2029-01-22T16:28:32.615Z'
+    }
+  ]
 
-  before('make knex instance', () => {
+  before(() => {
     db = knex({
-      client: 'pg',
-      connection: process.env.TEST_DATABASE_URL,
-    })
-    app.set('db', db)
+      client: "pg",
+      connection: process.env.TEST_DATABASE_URL
+    });
+    // empty the bookery_users table
+    return db("bookery_users")
+      .truncate()
+      .then(() => {
+        console.log('before adding')
+        // insert our test user list into bookery_users table
+        return db.into("bookery_users").insert(testUsers)
+      })
+      .then(() => {
+        console.log("after adding")
+      })
   })
 
   after('disconnect from db', () => db.destroy())
 
-  before('cleanup', () => helpers.cleanTables(db))
-
-  afterEach('cleanup', () => helpers.cleanTables(db))
-
   describe(`POST /api/users`, () => {
-    context(`User Validation`, () => {
-      beforeEach('insert users', () =>
-        helpers.seedUsers(
-          db,
-          testUsers,
-        )
-      )
-
-      const requiredFields = ['user_email', 'password', 'first_name']
-
-      requiredFields.forEach(field => {
-        const registerAttemptBody = {
-          user_email: 'test user_email',
-          password: 'test password',
-          first_name: 'test first_name',
-          last_name: 'test last_name',
-        }
-
-        it(`responds with 400 required error when '${field}' is missing`, () => {
-          delete registerAttemptBody[field]
-
-          return supertest(app)
-            .post('/api/users')
-            .send(registerAttemptBody)
-            .expect(400, {
-              error: `Missing '${field}' in request body`,
-            })
-        })
-      })
-
-      it(`responds 400 'Password be longer than 8 characters' when empty password`, () => {
-        const userShortPassword = {
-          user_email: 'test user_email',
-          password: '1234567',
-          first_name: 'test first_name',
-          last_name: 'test last_name'
-        }
-        return supertest(app)
-          .post('/api/users')
-          .send(userShortPassword)
-          .expect(400, { error: `Password be longer than 8 characters` })
-      })
-
-      it(`responds 400 'Password be less than 72 characters' when long password`, () => {
-        const userLongPassword = {
-          user_email: 'test user_email',
-          password: '*'.repeat(73),
-          first_name: 'test first_name',
-          last_name: 'test last_name'
-        }
-        return supertest(app)
-          .post('/api/users')
-          .send(userLongPassword)
-          .expect(400, { error: `Password be less than 72 characters` })
-      })
-
-      it(`responds 400 error when password starts with spaces`, () => {
-        const userPasswordStartsSpaces = {
-          user_email: 'test user_email',
-          password: ' 1Aa!2Bb@',
-          first_name: 'test first_name',
-          last_name: 'test last_name'
-        }
-        return supertest(app)
-          .post('/api/users')
-          .send(userPasswordStartsSpaces)
-          .expect(400, { error: `Password must not start or end with empty spaces` })
-      })
-
-      it(`responds 400 error when password ends with spaces`, () => {
-        const userPasswordEndsSpaces = {
-          user_email: 'test user_email',
-          password: '1Aa!2Bb@ ',
-          first_name: 'test first_name',
-          last_name: 'test last_name'
-        }
-        return supertest(app)
-          .post('/api/users')
-          .send(userPasswordEndsSpaces)
-          .expect(400, { error: `Password must not start or end with empty spaces` })
-      })
-
-      it(`responds 400 error when password isn't complex enough`, () => {
-        const userPasswordNotComplex = {
-          user_email: 'test user_email',
-          password: '11AAaabb',
-          first_name: 'test first_name',
-          last_name: 'test last_name'
-        }
-        return supertest(app)
-          .post('/api/users')
-          .send(userPasswordNotComplex)
-          .expect(400, { error: `Password must contain one upper case, lower case, number and special character` })
-      })
-
-      it(`responds 400 'User name already taken' when user_email isn't unique`, () => {
-        const duplicateUser = {
-          user_email: testUser.user_email,
-          password: '11AAaa!!',
-          first_name: 'test first_name',
-          last_name: 'test last_name'
-        }
-        return supertest(app)
-          .post('/api/users')
-          .send(duplicateUser)
-          .expect(400, { error: `Username already taken` })
-      })
-    })
-
     context(`Happy path`, () => {
       it(`responds 201, serialized user, storing bcryped password`, () => {
         const newUser = {

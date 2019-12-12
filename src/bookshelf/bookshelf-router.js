@@ -82,16 +82,16 @@ bookshelfRouter
 
 
   .patch(jsonBodyParser, (req, res, next) => {
-    const { user_id, book_id, review } = req.body
-    const reviewUpdate = { user_id, book_id, review }
-
+    const { book_id, review, rating } = req.body
+    const reviewUpdate = { review }
+    console.log('*****************', req.params.bookshelf_item_id)
     const numValues = Object.values(reviewUpdate).filter(Boolean).length
       if (numValues === 0) {
         return res.status(400).json({
           error: { message: 'Request must contain either user id, book id, or review' }
         })
       }
-      BookshelfService.updateReview(req.app.get('db', req.params.book_id), reviewUpdate)
+      BookshelfService.updateBookshelfItem(req.app.get('db'), req.params.bookshelf_item_id, reviewUpdate)
         .then(() => {
           res.status(204).end()
         })
