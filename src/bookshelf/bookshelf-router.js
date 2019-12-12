@@ -84,7 +84,7 @@ bookshelfRouter
   .patch(jsonBodyParser, (req, res, next) => {
     const { book_id, review, rating } = req.body
     const reviewUpdate = { review }
-    console.log('*****************', req.params.bookshelf_item_id)
+    console.log('*****************req.params.bookshelf_item_id', req.params.bookshelf_item_id)
     const numValues = Object.values(reviewUpdate).filter(Boolean).length
       if (numValues === 0) {
         return res.status(400).json({
@@ -116,7 +116,7 @@ bookshelfRouter
         req.app.get('db'),
         req.params.bookshelf_item_id
       )
-      console.log('******------------*******', req.params.bookshelf_item_id)
+      console.log('******------------*******req.params.bookshelf_item_id', req.params.bookshelf_item_id)
       if (!bookshelfItem)
         return res.status(404).json({
           error: `Bookshelf item doesn't exist`
