@@ -19,18 +19,22 @@ const morganOption = (NODE_ENV === 'production'
 app.use(morgan(morganOption))
 app.use(helmet())
 
-const whitelist = [CLIENT_ORIGIN, 'http://localhost:3000']
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
+// const whitelist = [CLIENT_ORIGIN, 'http://localhost:3000']
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1 || !origin) {
+//       callback(null, true)
+//     } else {
+//       callback(new Error('Not allowed by CORS'))
+//     }
+//   }
+// }
 
-app.use(cors(corsOptions))
+// app.use(cors(corsOptions))
+
+app.use(cors(
+  { origin: CLIENT_ORIGIN }
+))
 
 app.use('/api/users', usersRouter)
 app.use('/api/books', booksRouter)
