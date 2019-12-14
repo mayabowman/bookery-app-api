@@ -16,8 +16,6 @@ bookshelfRouter
   })
 
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
-    console.log('I made it here')
-    console.log(req.body)
     const { book_id, review, rating } = req.body
     const bookToAdd = { book_id, review, rating }
 
@@ -36,7 +34,6 @@ bookshelfRouter
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${book.id}`))
-          // .json(BookshelfService.serializeReview(book))
       })
       .catch(next)
   })
@@ -51,7 +48,6 @@ bookshelfRouter
         res.json(items)
       })
       .catch(next)
-      // res.json(BookshelfService.serializeBookshelfItem(res.bookshelfItem))
     })
 
     .post(jsonBodyParser, (req, res, next) => {
@@ -65,9 +61,7 @@ bookshelfRouter
           })
         }
       }
-      console.log(req.user)
       newReview.user_id = req.user.id
-      console.log(newReview)
       BookshelfService.insertReview(req.app.get('db'), newReview)
         .then(review => {
           res
@@ -78,36 +72,30 @@ bookshelfRouter
         .catch(next)
     })
 
+    .patch(jsonBodyParser, (req, res, next) => {
+      const { review } = req.body
+      const reviewUpdate = { review }
+      const numValues = Object.values(reviewUpdate).filter(Boolean).length
+        if (numValues === 0) {
+          return res.status(400).json({
+            error: { message: 'Request must contain either user id, book id, or review' }
+          })
+        }
+        BookshelfService.updateBookshelfItem(req.app.get('db'), req.params.bookshelf_item_id, reviewUpdate)
+          .then(() => {
+            res.status(204).end()
+          })
+          .catch(next)
+    })
 
-
-
-  .patch(jsonBodyParser, (req, res, next) => {
-    const { book_id, review, rating } = req.body
-    const reviewUpdate = { review }
-    console.log('*****************req.params.bookshelf_item_id', req.params.bookshelf_item_id)
-    const numValues = Object.values(reviewUpdate).filter(Boolean).length
-      if (numValues === 0) {
-        return res.status(400).json({
-          error: { message: 'Request must contain either user id, book id, or review' }
-        })
-      }
-      BookshelfService.updateBookshelfItem(req.app.get('db'), req.params.bookshelf_item_id, reviewUpdate)
+    .delete(jsonBodyParser, (req, res, next) => {
+      const { bookshelf_item_id } = req.params
+      BookshelfService.deleteBookshelfItem(req.app.get('db'), bookshelf_item_id)
         .then(() => {
           res.status(204).end()
         })
         .catch(next)
-  })
-
-  .delete(jsonBodyParser, (req, res, next) => {
-    const { bookshelf_item_id } = req.params
-    console.log('bookshelf_item_id', bookshelf_item_id)
-    console.log('req.params', req.params)
-    BookshelfService.deleteBookshelfItem(req.app.get('db'), bookshelf_item_id)
-      .then(() => {
-        res.status(204).end()
-      })
-      .catch(next)
-  })
+    })
 
   /* async/await syntax for promises */
   async function checkBookshelfItemExists(req, res, next) {
@@ -116,7 +104,6 @@ bookshelfRouter
         req.app.get('db'),
         req.params.bookshelf_item_id
       )
-      console.log('******------------*******req.params.bookshelf_item_id', req.params.bookshelf_item_id)
       if (!bookshelfItem)
         return res.status(404).json({
           error: `Bookshelf item doesn't exist`

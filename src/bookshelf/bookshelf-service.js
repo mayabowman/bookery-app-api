@@ -49,9 +49,11 @@ const BookshelfService = {
         'usr.id',
         'bookshelf.user_id'
       )
-      .groupBy('books.id', 'usr.id', 'bookshelf.rating', 'bookshelf.review', 'bookshelf.id')  },
+      // .groupBy('books.id', 'usr.id', 'bookshelf.rating', 'bookshelf.review', 'bookshelf.id')
+      .groupBy('books.id', 'usr.id', 'bookshelf.id')
+  },
 
-  // get book by book id
+  // get bookshelfItem by book id
   getById(db, id) {
     return BookshelfService.getAllBookshelfItems(db)
       .where('bookshelf.id', id)
