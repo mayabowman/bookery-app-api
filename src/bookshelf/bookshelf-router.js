@@ -40,7 +40,7 @@ bookshelfRouter
 
   bookshelfRouter
     .route('/:bookshelf_item_id')
-    // .all(requireAuth)
+    .all(requireAuth)
     .all(checkBookshelfItemExists)
     .get((req, res, next) => {
       BookshelfService.getById(req.app.get('db'), req.params.bookshelf_item_id)
@@ -90,6 +90,7 @@ bookshelfRouter
 
     .delete(jsonBodyParser, (req, res, next) => {
       const { bookshelf_item_id } = req.params
+      console.log('req.params', req.params)
       BookshelfService.deleteBookshelfItem(req.app.get('db'), bookshelf_item_id)
         .then(() => {
           res.status(204).end()
