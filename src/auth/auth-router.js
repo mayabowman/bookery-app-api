@@ -14,7 +14,7 @@ authRouter
           error: `Missing '${key}' in request body`
         })
 
-    AuthService.getUserWithUserName(
+    AuthService.getUserWithUserEmail(
       req.app.get('db'),
       loginUser.user_email
     )
