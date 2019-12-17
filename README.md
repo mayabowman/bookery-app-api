@@ -1,3 +1,4 @@
+To clone repo, use `https://github.com/mayabowman/bookery-app-api.git`
 To create database, use `createdb -U <user-name ie postgres> <database name>`
 To start server, use `npm run dev`
 To start database, use `pg_ctl start`
