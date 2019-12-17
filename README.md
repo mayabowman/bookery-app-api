@@ -1,8 +1,9 @@
+To create database, use `createdb -U <user-name ie postgres> <database name>`
 To start server, use `npm run dev`
 To start database, use `pg_ctl start`
 To stop database, use `pg_ctl stop`
 
-Seeding command example: psql -U dunder_mifflin -d blogful -f ./seeds/seed.blogful_articles.sql
+Seeding command example: psql -U postgres -d bookery -f ./seeds/seed.bookery_books.sql
 
 # Express Boilerplate!
 
