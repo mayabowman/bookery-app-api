@@ -60,6 +60,12 @@ const BookshelfService = {
       .first()
   },
 
+  // getByItemAndUserId(db, bookshelfItemId, userId) {
+  //   return BookshelfService.getAllBookshelfItems(db)
+  //     .where({ bookshelfItemId, userId })
+  //     .first()
+  // },
+
   // add book to bookshelf
   addToBookshelf(db, bookToAdd) {
     return db
@@ -92,6 +98,13 @@ const BookshelfService = {
       .where('id', id)
       .delete()
   },
+
+  // deleteBookshelfItem(db, bookshelfItemId, userId) {
+  //   console.log(bookshelfItemId)
+  //   return BookshelfService.getById(db, bookshelfItemId, userId)
+  //     .where({ bookshelfItemId, userId })
+  //     .delete()
+  // },
 
   serializeBookshelfItem(bookshelfItem) {
     const { reviewer, usr } = bookshelfItem

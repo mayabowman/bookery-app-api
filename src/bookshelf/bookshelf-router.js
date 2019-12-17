@@ -98,6 +98,20 @@ bookshelfRouter
         .catch(next)
     })
 
+    // bookshelfRouter
+    // .route('/:bookshelf_item_id/:user_id')
+    // .all(requireAuth)
+    // .all(checkBookshelfItemExists)
+    // .delete(jsonBodyParser, (req, res, next) => {
+    //   const { bookshelf_item_id, user_id } = req.params
+    //   console.log('req.params', req.params)
+    //   BookshelfService.deleteBookshelfItem(req.app.get('db'), bookshelf_item_id, user_id)
+    //     .then(() => {
+    //       res.status(204).end()
+    //     })
+    //     .catch(next)
+    // })
+
   /* async/await syntax for promises */
   async function checkBookshelfItemExists(req, res, next) {
     try {
