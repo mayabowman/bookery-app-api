@@ -93,7 +93,7 @@ describe(`Books service object`, function() {
       .then(() => {
         console.log('before adding')
         // insert our test bookshelfItems list into bookery_bookshelf table
-        return db.into("bookery_bookshelf").update(testBookshelfItems)
+        return db.into("bookery_bookshelf").insert(testBookshelfItems)
       })
       .then(() => {
         console.log("after adding")

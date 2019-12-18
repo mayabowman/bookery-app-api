@@ -18,7 +18,7 @@ const morganOption = (NODE_ENV === 'production'
 
 app.use(morgan(morganOption))
 app.use(helmet())
-app.use(cors())
+// app.use(cors())
 
 // const whitelist = [CLIENT_ORIGIN, 'http://localhost:3000']
 // const corsOptions = {
@@ -38,9 +38,9 @@ app.use(cors())
 //   next();
 // });
 
-// app.use(cors(
-//   { origin: CLIENT_ORIGIN }
-// ))
+app.use(cors(
+  { origin: CLIENT_ORIGIN }
+))
 
 app.use('/api/users', usersRouter)
 app.use('/api/books', booksRouter)
