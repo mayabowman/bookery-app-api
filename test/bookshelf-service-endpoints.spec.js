@@ -1,103 +1,51 @@
 const BooksService = require("../src/books/books-service")
 const knex = require("knex")
+const app = require('../src/app')
+const helpers = require('./test-helpers')
 
-describe(`Books service object`, function() {
+describe(`Bookshelf service object`, function() {
   let db
 
-  let testBookshelfItems = [
-    {
-      id: 1,
-      user_id: 1,
-      book_id: 1,
-      review:"test review 1",
-      rating: 3,
-      reviewer: {
-        id: 1,
-          user_email: "testuser1@gmail.com",
-          first_name: "Test1",
-          last_name: "User1",
-          date_created: "2019-11-26T20:52:15.526905"
+  const {
+    testBooks,
+    testUsers,
+    testBookshelfItems
+  } = helpers.makeFixtures
 
-      },
-      books: {
-        id: 1,
-        title: "Test Book 1",
-        author: "Test Author 1",
-        book_description: "Test description 1.",
-        graphic: "https://images-na.ssl-images-amazon.com/images/I/41Q3WS9PARL.jpg",
-        isbn: "1234567899111",
-        pages: 130,
-        average_rating: 3
-      }
-    },
-    {
-      id: 2,
-      user_id: 2,
-      book_id: 2,
-      review:"test review 2",
-      rating: 3,
-      reviewer: {
-        id: 2,
-          user_email: "testuser2@gmail.com",
-          first_name: "Test2",
-          last_name: "User2",
-          date_created: "2019-11-26T20:52:15.526905"
-
-      },
-      books: {
-        id: 2,
-        title: "Test Book 2",
-        author: "Test Author 2",
-        book_description: "Test description 2.",
-        graphic: "https://images-na.ssl-images-amazon.com/images/I/41Q3WS9PARL.jpg",
-        isbn: "123456789222",
-        pages: 130,
-        average_rating: 3
-      }
-    },
-    {
-      id: 3,
-      user_id: 3,
-      book_id: 3,
-      review:"test review 3",
-      rating: 3,
-      reviewer: {
-        id: 3,
-          user_email: "testuser3@gmail.com",
-          first_name: "Test3",
-          last_name: "User3",
-          date_created: "2019-11-26T20:52:15.526905"
-
-      },
-      books: {
-        id: 1,
-        title: "Test Book 3",
-        author: "Test Author 3",
-        book_description: "Test description 3.",
-        graphic: "https://images-na.ssl-images-amazon.com/images/I/41Q3WS9PARL.jpg",
-        isbn: "123456789333",
-        pages: 130,
-        average_rating: 3
-      }
-    },
-  ]
-
-  before(() => {
+  before('make knex instance', () => {
     db = knex({
-      client: "pg",
-      connection: process.env.TEST_DATABASE_URL
-    });
-    // empty the bookery_bookshelf table
-    return db("bookery_bookshelf")
-      .truncate()
-      .then(() => {
-        console.log('before adding')
-        // insert our test bookshelfItems list into bookery_bookshelf table
-        return db.into("bookery_bookshelf").insert(testBookshelfItems)
-      })
-      .then(() => {
-        console.log("after adding")
-      })
+      client: 'pg',
+      connection: process.env.TEST_DATABASE_URL,
+    })
+    app.set('db', db)
+  })
+
+  before('cleanup', () => {
+    // empty the bookery_books table
+    return db.raw(
+      `TRUNCATE
+        bookery_bookshelf,
+        bookery_books,
+        bookery_users
+        CASCADE
+      `
+    )
+    .then(() => {
+      console.log('before adding')
+      // insert our test books into bookery_books table
+      return db.into("bookery_books").insert(testBooks)
+    })
+    .then(() => {
+      // insert our test users into bookery_users table
+      return db.into("bookery_users").insert(testUsers)
+    })
+    .then(() => {
+      // insert our test bookshelfItems into bookery_bookshelf table
+      return db.into("bookery_bookshelf").insert(testBookshelfItems)
+    })
+    .then(() => {
+      console.log("after adding")
+    })
   })
 
   after(() => db.destroy());

@@ -1,5 +1,6 @@
 const BooksService = require("../src/books/books-service");
 const knex = require("knex");
+const app = require('../src/app')
 
 describe(`Books service object`, function() {
   let db
@@ -37,23 +38,33 @@ describe(`Books service object`, function() {
     }
   ];
 
-  before(() => {
+  before('make knex instance', () => {
     db = knex({
-      client: "pg",
-      connection: process.env.TEST_DATABASE_URL
-    });
+      client: 'pg',
+      connection: process.env.TEST_DATABASE_URL,
+    })
+    app.set('db', db)
+  })
+
+  before('cleanup', () => {
     // empty the bookery_books table
-    return db("bookery_books")
-      .truncate()
-      .then(() => {
-        console.log('before adding')
-        // insert our test book list into bookery_books table
-        return db.into("bookery_books").insert(testBooks)
-      })
-      .then(() => {
-        console.log("after adding")
-      });
-  });
+    return db.raw(
+      `TRUNCATE
+        bookery_users,
+        bookery_books,
+        bookery_bookshelf
+        CASCADE
+      `
+    )
+    .then(() => {
+      console.log('before adding')
+      // insert our test user list into bookery_users table
+      return db.into("bookery_books").insert(testBooks)
+    })
+    .then(() => {
+      console.log("after adding")
+    })
+  })
 
   after(() => db.destroy());
 
