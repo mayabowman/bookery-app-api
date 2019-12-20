@@ -9,8 +9,11 @@ describe(`Bookshelf service object`, function() {
   const {
     testBooks,
     testUsers,
-    testBookshelfItems
-  } = helpers.makeFixtures
+    testBookshelfItems,
+    testUpdatedReviews
+  } = helpers.makeFixtures()
+
+  console.log('*****testUpdatedReviews', testUpdatedReviews)
 
   before('make knex instance', () => {
     db = knex({
@@ -71,6 +74,7 @@ describe(`Bookshelf service object`, function() {
   // post book to bookshelf
   describe('POST /api/bookshelf', () => {
     it(`adds book to bookshelf, responding with 204`, () => {
+      console.log('*****testBookshelfItems******', testBookshelfItems)
       const testBookshelfItem = testBookshelfItems[0]
       const testReview = testBookshelfItems[0].review
       const testRating = testBookshelfItems.rating
@@ -110,15 +114,16 @@ describe(`Bookshelf service object`, function() {
   describe(`updateBookshelfItem()`, () => {
     it(`responds 204 when updated review is submitted`, () => {
       const updatedReview = {
-        id: testReviews.id,
-        review: testReviews.review,
+        bookshelfItemId: testUpdatedReviews.id,
+        reviewUpdate: testUpdatedReviews.review,
       }
 
       return supertest(app)
         .patch(`/api/bookshelf/${updatedReview.id}`)
+        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
         .send(updatedReview)
         .expect(204, {
-          review: testReviews.review,
+          review: updatedReview.reviewUpdate,
         })
     })
   })

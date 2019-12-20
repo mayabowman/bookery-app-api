@@ -28,14 +28,6 @@ function makeUsersArray() {
       password: 'password',
       date_created: '2029-01-22T16:28:32.615Z'
     },
-    {
-      id: 4,
-      user_email: 'testuser4@gmail.com',
-      first_name: 'Test4',
-      last_name: 'User4',
-      password: 'password',
-      date_created: '2029-01-22T16:28:32.615Z'
-    },
   ]
 }
 
@@ -74,12 +66,12 @@ function makeBooksArray() {
   ]
 }
 
-function makeBookshelfItemsArray() {
+function makeBookshelfItemsArray(users, books) {
   return [
     {
       id: 1,
-      user_id: 1,
-      book_id: 1,
+      user_id: users[0].id,
+      book_id: books[0].id,
       review:"test review 1",
       rating: 3,
       // reviewer: {
@@ -103,8 +95,8 @@ function makeBookshelfItemsArray() {
     },
     {
       id: 2,
-      user_id: 2,
-      book_id: 2,
+      user_id: users[1].id,
+      book_id: books[1].id,
       review:"test review 2",
       rating: 3,
       // reviewer: {
@@ -128,8 +120,8 @@ function makeBookshelfItemsArray() {
     },
     {
       id: 3,
-      user_id: 3,
-      book_id: 3,
+      user_id: users[2].id,
+      book_id: books[2].id,
       review:"test review 3",
       rating: 3,
     //   reviewer: {
@@ -154,12 +146,30 @@ function makeBookshelfItemsArray() {
   ]
 }
 
+function makeReviewsArray(bookshelfItem) {
+  return [
+    {
+      bookshelfItemId: bookshelfItem[0].id,
+      reviewUpdate: "Test Review 1"
+    },
+    {
+      bookshelfItemId: bookshelfItem[1].id,
+      reviewUpdate: "Test Review 2"
+    },
+    {
+      bookshelfItemId: bookshelfItem[2].id,
+      reviewUpdate: "Test Review 3"
+    }
+  ]
+}
+
 function makeFixtures() {
   const testUsers = makeUsersArray()
   const testBooks = makeBooksArray()
-  const testBookshelfItems = makeBookshelfItemsArray()
+  const testBookshelfItems = makeBookshelfItemsArray(testUsers, testBooks)
+  const testUpdatedReviews = makeReviewsArray(testBookshelfItems)
 
-  return { testUsers, testBooks, testBookshelfItems }
+  return { testUsers, testBooks, testBookshelfItems, testUpdatedReviews }
 }
 
 function cleanTables(db) {
