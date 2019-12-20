@@ -9,6 +9,7 @@ describe(`Bookshelf service object`, function() {
   const {
     testBooks,
     testUsers,
+    testBookshelf,
     testBookshelfItems,
     testUpdatedReviews
   } = helpers.makeFixtures()
@@ -44,7 +45,7 @@ describe(`Bookshelf service object`, function() {
     })
     .then(() => {
       // insert our test bookshelfItems into bookery_bookshelf table
-      return db.into("bookery_bookshelf").insert(testBookshelfItems)
+      return db.into("bookery_bookshelf").insert(testBookshelf)
     })
     .then(() => {
       console.log("after adding")
@@ -55,17 +56,10 @@ describe(`Bookshelf service object`, function() {
 
   // get allBookshelfItems
   describe(`GET /api/bookshelf`, () => {
-    context(`Given no bookshelfItems`, () => {
-      it(`responds with 200 and an empty list`, () => {
-        return supertest(app)
-          .get('api/bookshelf')
-          .expect(200, [])
-      })
-    })
     context('Given there are bookshelfItems in the database', () => {
       it(`responds with 200 and all of the bookshelfItems`, () => {
         return supertest(app)
-          .get('api/bookshelf')
+          .get('/api/bookshelf')
           .expect(200, testBookshelfItems)
       })
     })
@@ -95,16 +89,18 @@ describe(`Bookshelf service object`, function() {
       it(`responds with 404`, () => {
         const bookshelfItemId = 123
         return supertest(app)
-          .get(`api/bookshelf/${bookshelfItemId}`)
-          .expect(404, { error: `BookshelfItem doesn't exist` })
+          .get(`/api/bookshelf/${bookshelfItemId}`)
+          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+          .expect(404, { error: `Bookshelf item doesn't exist` })
       })
     })
     context('Given there are bookshelfItems in the database', () => {
       it('responds with 200 and the specified bookshelfItem', () => {
-        const bookshelfItemId = 2
-        const testBookshelfItem = testBookshelfItems[1]
+        const bookshelfItemId = 1
+        const testBookshelfItem = testBookshelfItems[0]
         return supertest(app)
-          .get(`'api/bookshelf/${bookshelfItemId}`)
+          .get(`/api/bookshelf/${bookshelfItemId}`)
+          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
           .expect(200, testBookshelfItem)
       })
     })
@@ -113,29 +109,22 @@ describe(`Bookshelf service object`, function() {
   // updatebookshelfItem (review)
   describe(`updateBookshelfItem()`, () => {
     it(`responds 204 when updated review is submitted`, () => {
-      const updatedReview = {
-        bookshelfItemId: testUpdatedReviews.id,
-        reviewUpdate: testUpdatedReviews.review,
-      }
-
       return supertest(app)
-        .patch(`/api/bookshelf/${updatedReview.id}`)
+        .patch(`/api/bookshelf/1`)
         .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-        .send(updatedReview)
-        .expect(204, {
-          review: updatedReview.reviewUpdate,
-        })
+        .send({ review: 'dummy text' })
+        .expect(204)
     })
   })
 
   // delete bookshelfItem
   describe(`DELETE api/bookshelf/:bookshelf_item_id`, () => {
     it('responds with 204', () => {
-      const bookshelfItemId = 2
-      const testBookshelfItem = testBookshelfItems[1]
+      const bookshelfItemId = 1
       return supertest(app)
-        .delete(`'api/bookshelf/${bookshelfItemId}`)
-        .expect(204, testBookshelfItem)
+        .delete(`/api/bookshelf/${bookshelfItemId}`)
+        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+        .expect(204)
     })
   })
 })
