@@ -50,28 +50,6 @@ bookshelfRouter
       .catch(next)
     })
 
-    // .post(jsonBodyParser, (req, res, next) => {
-    //   const { user_id, bookshelf_item_id, review } = req.body
-    //   const newReview = { user_id, bookshelf_item_id, review }
-
-    //   for (const [key, value] of Object.entries(newReview)) {
-    //     if (value == null) {
-    //       return res.status(400).json({
-    //         error: { message: `Missing '${key}' in request` }
-    //       })
-    //     }
-    //   }
-    //   newReview.user_id = req.user.id
-    //   BookshelfService.insertReview(req.app.get('db'), newReview)
-    //     .then(review => {
-    //       res
-    //         .status(201)
-    //         .location(path.posix.join(req.originalUrl, `/${review.id}`))
-    //         .json(BookshelfService.serializeReview(review))
-    //     })
-    //     .catch(next)
-    // })
-
     .patch(jsonBodyParser, (req, res, next) => {
       const { review } = req.body
       const reviewUpdate = { review }
