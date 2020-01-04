@@ -73,6 +73,7 @@ const BookshelfService = {
       .into('bookery_bookshelf')
       .returning('*')
       .then(rows => {
+        console.log('********rows*****', rows[0])
         return rows[0]
       })
   },

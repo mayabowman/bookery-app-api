@@ -31,9 +31,13 @@ bookshelfRouter
 
     BookshelfService.addToBookshelf(req.app.get('db'), bookToAdd)
       .then(book => {
+        return BookshelfService.getById(req.app.get('db'), book.id)
+      })
+      .then(book => {
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${book.id}`))
+          .json(book)
       })
       .catch(next)
   })
