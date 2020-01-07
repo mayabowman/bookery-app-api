@@ -1,34 +1,15 @@
-To clone repo, use `https://github.com/mayabowman/bookery-app-api.git`
-To create database, use `createdb -U <user-name ie postgres> <database name>`
-To start server, use `npm run dev`
-To start database, use `pg_ctl start`
-To stop database, use `pg_ctl stop`
+# Bookery API
 
-Seeding command example: psql -U postgres -d bookery -f ./seeds/seed.bookery_books.sql
+This RESTful API controls all interactions between the front end Bookery app and the database.
 
-# Express Boilerplate!
+## Technology
 
-This is a boilerplate project used for starting new projects.
+This API was built using Node, Express and Knex. The database was built using PostgreSQL.
 
-## Set up
+## Client Repo
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+https://github.com/mayabowman/bookery-app
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+## Live Site
 
-## Scripts
-
-Start the application `npm start`
-
-Start nodemon for the application `npm run dev`
-
-Run the tests `npm test`
-
-## Deploying
-
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+https://bookery-app.mayabowman.now.sh

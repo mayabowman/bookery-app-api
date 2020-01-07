@@ -14,8 +14,6 @@ describe(`Bookshelf service object`, function() {
     testUpdatedReviews
   } = helpers.makeFixtures()
 
-  console.log('*****testUpdatedReviews', testUpdatedReviews)
-
   before('make knex instance', () => {
     db = knex({
       client: 'pg',
@@ -68,7 +66,6 @@ describe(`Bookshelf service object`, function() {
   // post book to bookshelf
   describe('POST /api/bookshelf', () => {
     it(`adds book to bookshelf, responding with 204`, () => {
-      console.log('*****testBookshelfItems******', testBookshelfItems)
       const testBookshelfItem = testBookshelfItems[0]
       const testReview = testBookshelfItems[0].review
       const testRating = testBookshelfItems.rating

@@ -51,10 +51,6 @@ describe('Auth Endpoints', function() {
   })
 
   before('cleanup', () => {
-  //   db = knex({
-  //     client: "pg",
-  //     connection: process.env.TEST_DATABASE_URL
-  //   });
     // empty the bookery_users table
     return db.raw(
       `TRUNCATE

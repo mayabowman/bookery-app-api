@@ -70,9 +70,7 @@ describe(`Books service object`, function() {
 
   describe(`getAllBooks()`, () => {
     it(`resolves all books from 'bookery_books' table`, () => {
-      console.log("yyy");
       return BooksService.getAllBooks(db).then(actual => {
-        console.log(actual);
         expect(actual).to.eql(testBooks);
       });
     });

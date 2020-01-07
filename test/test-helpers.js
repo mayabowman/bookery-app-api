@@ -164,7 +164,6 @@ function makeFixtures() {
 }
 
 function cleanTables(db) {
-  console.log('**********************')
   return db.raw(
     `TRUNCATE
       bookery_users,
