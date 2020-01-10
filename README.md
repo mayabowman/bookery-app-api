@@ -133,7 +133,7 @@ GET
 ```javascript
 /api/bookshelf
 ```
-* Methods
+* Method
 ```
 GET
 ```
@@ -169,7 +169,7 @@ GET
 ```javascript
 /api/bookshelf
 ```
-* Methods
+* Method
 ```
 POST
 ```
