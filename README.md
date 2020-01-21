@@ -2,6 +2,8 @@
 
 This RESTful API controls all interactions between the front end Bookery app and the database.
 
+![Bookery Browse Page](https://user-images.githubusercontent.com/50124247/71899540-f4e09300-3129-11ea-9693-34692af37fef.png)
+
 ## Technology
 
 This API was built using Node, Express and Knex. The database was built using PostgreSQL.
