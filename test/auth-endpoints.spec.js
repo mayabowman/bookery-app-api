@@ -1,7 +1,16 @@
 const knex = require('knex')
 const jwt = require('jsonwebtoken')
 const app = require('../src/app')
-const helpers = require('./test-helpers')
+const bcrypt = require('bcryptjs')
+const { makeUsersArray} = require('./test-helpers')
+
+function seedUsers(users) {
+  const preppedUsers = users.map((user) => ({
+    ...user,
+    password: bcrypt.hashSync(user.password, 12),
+  }));
+  return preppedUsers
+}
 
 describe('Auth Endpoints', function() {
   let db
@@ -72,7 +81,7 @@ describe('Auth Endpoints', function() {
 
   after('disconnect from db', () => db.destroy())
 
-  describe.skip(`POST /api/auth/login`, () => {
+  describe(`POST /api/auth/login`, () => {
 
     it(`responds 200 and JWT auth token using secret when valid credentials`, () => {
       const userValidCreds = {
