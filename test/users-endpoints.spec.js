@@ -41,27 +41,23 @@ describe('Users Endpoints', function() {
     }
   ]
 
-  before(() => {
+  before('make knex instance', () => {
     db = knex({
-      client: "pg",
-      connection: process.env.TEST_DATABASE_URL
+      client: 'pg',
+      connection: process.env.TEST_DATABASE_URL,
     });
-    // empty the bookery_users table
-    helpers.cleanTables(db)
-    return db("bookery_users")
-      .then(() => {
-        console.log('before adding')
-        // insert our test user list into bookery_users table
-        return db.into("bookery_users").insert(testUsers)
-      })
-      .then(() => {
-        console.log("after adding")
-      })
-  })
+    app.set('db', db);
+  });
 
-  after('disconnect from db', () => db.destroy())
+  after('disconnect from db', () => db.destroy());
 
-  describe.skip(`POST /api/users`, () => {
+  before('clean the table', () => db.raw(`TRUNCATE bookery_users, bookery_books, bookery_bookshelf RESTART IDENTITY CASCADE`));
+
+  beforeEach('insert users', () => helpers.seedUsers(db, testUsers));
+
+  afterEach('clean the table', () => db.raw(`TRUNCATE bookery_users, bookery_books, bookery_bookshelf RESTART IDENTITY CASCADE`));
+
+  describe(`POST /api/users`, () => {
     context(`Happy path`, () => {
       it(`responds 201, serialized user, storing bcryped password`, () => {
         const newUser = {
@@ -72,9 +68,12 @@ describe('Users Endpoints', function() {
         }
         return supertest(app)
           .post('/api/users')
+          .set('Content-Type', 'application/json')
+          .set('Authorization', helpers.makeAuthHeader(newUser))
           .send(newUser)
-          .expect(201)
+          // .expect(201)
           .expect(res => {
+            console.log('res', res)
             expect(res.body).to.have.property('id')
             expect(res.body.user_email).to.eql(newUser.user_email)
             expect(res.body.first_name).to.eql(newUser.first_name)
@@ -87,7 +86,7 @@ describe('Users Endpoints', function() {
           })
           .expect(res =>
             db
-              .from('blogful_users')
+              .from('bookery_users')
               .select('*')
               .where({ id: res.body.id })
               .first()
