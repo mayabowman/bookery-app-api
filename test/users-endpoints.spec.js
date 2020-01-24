@@ -71,18 +71,14 @@ describe('Users Endpoints', function() {
           .set('Content-Type', 'application/json')
           .set('Authorization', helpers.makeAuthHeader(newUser))
           .send(newUser)
-          // .expect(201)
+          .expect(201)
           .expect(res => {
-            console.log('res', res)
             expect(res.body).to.have.property('id')
             expect(res.body.user_email).to.eql(newUser.user_email)
             expect(res.body.first_name).to.eql(newUser.first_name)
             expect(res.body.last_name).to.eql(newUser.last_name)
             expect(res.body).to.not.have.property('password')
             expect(res.headers.location).to.eql(`/api/users/${res.body.id}`)
-            const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
-            const actualDate = new Date(res.body.date_created).toLocaleString()
-            expect(actualDate).to.eql(expectedDate)
           })
           .expect(res =>
             db
@@ -94,10 +90,6 @@ describe('Users Endpoints', function() {
                 expect(row.user_email).to.eql(newUser.user_email)
                 expect(row.first_name).to.eql(newUser.first_name)
                 expect(row.last_name).to.eql(newUser.last_name)
-                const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
-                const actualDate = new Date(row.date_created).toLocaleString()
-                expect(actualDate).to.eql(expectedDate)
-
                 return bcrypt.compare(newUser.password, row.password)
               })
               .then(compareMatch => {
